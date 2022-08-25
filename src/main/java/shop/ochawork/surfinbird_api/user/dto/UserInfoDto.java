@@ -1,4 +1,4 @@
-package shop.ochawork.surfinbird.user.dto;
+package shop.ochawork.surfinbird_api.user.dto;
 
 import java.util.UUID;
 

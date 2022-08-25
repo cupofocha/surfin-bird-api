@@ -1,8 +1,8 @@
-package shop.ochawork.surfinbird.user.dto;
+package shop.ochawork.surfinbird_api.user.dto;
 
-import shop.ochawork.surfinbird.user.Role;
+import shop.ochawork.surfinbird_api.user.Role;
 
-public class UserCreationDto {
+public class UserRegisterDto {
 
     private String displayName;
 
@@ -44,7 +44,7 @@ public class UserCreationDto {
         this.role = role;
     }
 
-    public UserCreationDto(String displayName, String password, String email, Role role) {
+    public UserRegisterDto(String displayName, String password, String email, Role role) {
         this.displayName = displayName;
         this.password = password;
         this.email = email;

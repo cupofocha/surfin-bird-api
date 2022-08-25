@@ -1,6 +1,5 @@
-package shop.ochawork.surfinbird.user;
+package shop.ochawork.surfinbird_api.user;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import java.util.UUID;
 
