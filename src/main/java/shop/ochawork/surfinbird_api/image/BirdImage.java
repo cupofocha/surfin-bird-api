@@ -14,6 +14,18 @@ public class BirdImage {
 
     private UUID uploaderId;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public String getBird() {
         return bird;
     }

@@ -19,10 +19,20 @@ public class BirdImageController {
     }
 
 
-    @PostMapping(path = "{userId}")
+    @PostMapping(path = "upload-image/{userId}")
     public ResponseEntity<?> handleFileUpload(@RequestParam("birdImage") MultipartFile birdImage,
                                               @PathVariable("userId") UUID userId) {
         return birdImageService.addImage(birdImage, userId);
+    }
+
+    @PostMapping(path = "upload-images/{userId}")
+    public ResponseEntity<?> handleMultipleFileUpload(@RequestParam("birdImages") MultipartFile[] birdImages,
+                                              @PathVariable("userId") UUID userId) {
+        for(MultipartFile birdImage : birdImages) {
+            birdImageService.addImage(birdImage, userId);
+        }
+
+        return ResponseEntity.ok("Files uploaded successfully.");
     }
 
     @GetMapping

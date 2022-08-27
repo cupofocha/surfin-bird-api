@@ -18,7 +18,8 @@ public class BirdImageDateAccessService {
     }
 
     public int numOfImages(){
-        return selectAllImages().size();
+        String sql = "SELECT COUNT(*) FROM bird_image";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     public int insertImage(UUID userId, String path, Boolean approvement) {
@@ -32,14 +33,14 @@ public class BirdImageDateAccessService {
             return 0;
         }
 
-        String sql =
+        String sql =""+
                 "INSERT INTO bird_image (" +
-                        "id, " +
-                        "bird, " +
-                        "path, " +
-                        "approvement, " +
-                        "uploader_id) " +
-                        "VALUES (?,?,?,?,?)" ;
+                "id, " +
+                "bird, " +
+                "path, " +
+                "approvement, " +
+                "uploader_id) " +
+                "VALUES (?,?,?,?,?)" ;
         return jdbcTemplate.update(sql, numOfImages(), "NULL", path, approvement, userId);
     }
 
@@ -54,6 +55,15 @@ public class BirdImageDateAccessService {
                 " FROM bird_image";
 
         return jdbcTemplate.query(sql, mapImageFromDb());
+    }
+
+    public BirdImage selectImageById(long id) {
+        String sql = ""+
+                " SELECT * " +
+                " FROM bird_image " +
+                " WHERE id = ? ";
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapImageFromDb());
     }
 
     boolean birdImageExists(String path) {

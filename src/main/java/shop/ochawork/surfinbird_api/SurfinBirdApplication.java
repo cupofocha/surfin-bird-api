@@ -8,7 +8,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class SurfinBirdApplication {
-
     private static void createUserDir(final String dirName) throws IOException {
         final File homeDir = new File(System.getProperty("user.home"));
         final File dir = new File(homeDir, dirName);

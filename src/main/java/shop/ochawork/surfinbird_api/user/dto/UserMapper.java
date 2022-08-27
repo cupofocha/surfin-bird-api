@@ -15,7 +15,11 @@ public class UserMapper {
         return new User(UUID.randomUUID(), newUser.getDisplayName(), newUser.getPassword(), newUser.getEmail(), newUser.getRole());
     }
 
-    public User userWithNewPwd(User user, ChangePasswordDao changePasswordDao){
+    public UserLoginDto userLoginDto(User user) {
+        return new UserLoginDto(user.getEmail(), user.getPassword());
+    }
+
+    public User userWithNewPwd(User user, ChangePasswordDao changePasswordDao) {
         return new User(user.getUserId(), user.getDisplayName(), user.getPassword(), user.getEmail(), user.getRole());
     }
 }

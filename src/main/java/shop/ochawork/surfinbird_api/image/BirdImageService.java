@@ -33,6 +33,10 @@ public class BirdImageService {
         return new File(homeDir, "/SurfinBird/Images");
     }
 
+    public BirdImage getImageById(long id) {
+        return birdImageDateAccessService.selectImageById(id);
+    }
+
     public ResponseEntity<?> addImage(MultipartFile birdImage, UUID userId) {
         Boolean approvement = false;
         String fileName = birdImage.getOriginalFilename();
