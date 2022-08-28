@@ -1,4 +1,4 @@
-package shop.ochawork.surfinbird_api.comment;
+package shop.ochawork.surfinbird_api.comment.dto;
 
 import java.util.UUID;
 

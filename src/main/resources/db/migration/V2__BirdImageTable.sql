@@ -3,5 +3,6 @@ CREATE TABLE IF NOT EXISTS bird_image (
     bird VARCHAR(100) NOT NULL,
     path VARCHAR(100) NOT NULL,
     approvement BOOLEAN,
-    uploader_id UUID NOT NULL
+    uploader_id UUID NOT NULL,
+    post_id INT NOT NULL
 );

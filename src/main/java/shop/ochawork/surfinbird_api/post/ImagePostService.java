@@ -14,10 +14,10 @@ public class ImagePostService {
         this.imagePostDataAccessService = imagePostDataAccessService;
     }
 
-    public int addPost(ImagePost imagePost) {
-        return imagePostDataAccessService.insertImagePost(imagePost.getPosterId(),
+    public PostState addPost(ImagePost imagePost) {
+        return new PostState(imagePostDataAccessService.insertImagePost(imagePost.getPosterId(),
                 imagePost.getText(),
-                imagePost.getBirdImage().getId());
+                imagePost.getBirdImage().getId()), "Success");
     }
 
     public ImagePost getPostById(long id) {

@@ -1,9 +1,8 @@
-package shop.ochawork.surfinbird_api.image;
+package shop.ochawork.surfinbird_api.image.dto;
 
-import javax.validation.Path;
 import java.util.UUID;
 
-public class BirdImage {
+public class DisplayBirdImageDto {
     private long id;
 
     private String bird;
@@ -12,16 +11,24 @@ public class BirdImage {
 
     private Boolean approvement;
 
-    private UUID uploaderId;
+    private String uploaderName;
 
     private long postId;
 
-    public BirdImage(long id, String bird, String path, Boolean approvement, UUID uploaderId, long postId) {
+    public long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(long postId) {
+        this.postId = postId;
+    }
+
+    public DisplayBirdImageDto(long id, String bird, String path, Boolean approvement, String uploaderName, long postId) {
         this.id = id;
         this.bird = bird;
         this.path = path;
         this.approvement = approvement;
-        this.uploaderId = uploaderId;
+        this.uploaderName = uploaderName;
         this.postId = postId;
     }
 
@@ -31,10 +38,6 @@ public class BirdImage {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public String getBird() {
@@ -49,8 +52,8 @@ public class BirdImage {
         return path;
     }
 
-    public void setPath(Path path) {
-        this.path = String.valueOf(path);
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Boolean getApprovement() {
@@ -61,19 +64,11 @@ public class BirdImage {
         this.approvement = approvement;
     }
 
-    public UUID getUploaderId() {
-        return uploaderId;
+    public String getUploaderName() {
+        return uploaderName;
     }
 
-    public void setUploaderId(UUID uploaderId) {
-        this.uploaderId = uploaderId;
-    }
-
-    public long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(long postId) {
-        this.postId = postId;
+    public void setUploaderName(String uploaderName) {
+        this.uploaderName = uploaderName;
     }
 }

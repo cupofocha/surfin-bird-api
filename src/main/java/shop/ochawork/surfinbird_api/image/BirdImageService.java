@@ -37,7 +37,7 @@ public class BirdImageService {
         return birdImageDateAccessService.selectImageById(id);
     }
 
-    public ResponseEntity<?> addImage(MultipartFile birdImage, UUID userId) {
+    public BirdImageUploadState addImage(MultipartFile birdImage, UUID userId) {
         Boolean approvement = false;
         String fileName = birdImage.getOriginalFilename();
         InetAddress localHost = null;
@@ -54,16 +54,27 @@ public class BirdImageService {
         }
         try {
             birdImage.transferTo( new File(getImgDir(), fileName));
-            birdImageDateAccessService.insertImage(
+            if(birdImageDateAccessService.insertImage(
                     userId,
                     address + fileName,
-                    approvement
-                    );
-        } catch (Exception e) {
-            System.out.println(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                    approvement,
+                    0
+                    ) == 0){
+                return new BirdImageUploadState(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+                        "Image already exists!");
+            }
+            else return new BirdImageUploadState(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+                    "Success");
         }
-        return ResponseEntity.ok("File uploaded successfully.");
+        catch (Exception e) {
+            System.out.println(e);
+            return new BirdImageUploadState(0
+                    ,HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        }
+    }
+
+    public int updateImagePostId(long id, long postId) {
+        return birdImageDateAccessService.updateImagePostIdById(id, postId);
     }
 
     public List<BirdImage> getAllImages() {

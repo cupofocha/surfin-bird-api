@@ -17,8 +17,10 @@ public class CommentDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Comment> mapUserFromDb() {
+    private RowMapper<Comment> mapCommentFromDb() {
         return (resultSet, i) -> {
+            System.out.println("Comments below");
+            System.out.println(resultSet.getString("text"));
             return new Comment(
                     resultSet.getInt("id"),
                     UUID.fromString(resultSet.getString("commenter_id")),
@@ -48,9 +50,10 @@ public class CommentDataAccessService {
         String sql = ""+
                 " SELECT * " +
                 " FROM comment " +
-                " WHERE post_id = ? " +
-                " AND post_type = ?";
+                " WHERE (post_id = ? " +
+                " AND post_type = ?)";
 
-        return jdbcTemplate.query(sql, new Object[]{postId, postType}, mapUserFromDb());
+        System.out.println("Getting comments for: "+postType+postId);
+        return jdbcTemplate.query(sql, new Object[]{postId, postType}, mapCommentFromDb());
     }
 }

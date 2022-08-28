@@ -2,22 +2,32 @@ package shop.ochawork.surfinbird_api.comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import shop.ochawork.surfinbird_api.post.dto.ImagePostDto;
+import shop.ochawork.surfinbird_api.comment.dto.CommentDto;
+import shop.ochawork.surfinbird_api.comment.dto.CommentMapper;
+import shop.ochawork.surfinbird_api.comment.dto.DisplayCommentDto;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("comment")
 public class CommentController {
+    private final CommentMapper commentMapper;
+
     private final CommentService commentService;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentMapper commentMapper, CommentService commentService) {
+        this.commentMapper = commentMapper;
         this.commentService = commentService;
     }
 
     @PostMapping(path = "/{postType}/{postId}")
     public int addComment(@PathVariable("postType") String postType, @PathVariable("postId") long postId, @RequestBody CommentDto commentDto){
         return commentService.addComment(commentDto, postType, postId);
+    }
+
+    @GetMapping(path = "/{postType}/{postId}")
+    public List<DisplayCommentDto> getComments(@PathVariable("postType") String postType, @PathVariable("postId") long postId){
+        return commentMapper.toDisplayCommentDtoList(commentService.getComments(postType, postId));
     }
 }

@@ -29,7 +29,7 @@ public class UserDataAccessService {
         };
     }
 
-    User selectUserById(UUID userId) {
+    public User selectUserById(UUID userId) {
         String sql =
                 "SELECT " +
                 " * " +
@@ -39,7 +39,7 @@ public class UserDataAccessService {
         return jdbcTemplate.queryForObject(sql, new Object[]{userId}, mapUserFromDb());
     }
 
-    User selectUserByEmail(String email) {
+    public User selectUserByEmail(String email) {
         String sql =""+
                 "SELECT " +
                 " * " +

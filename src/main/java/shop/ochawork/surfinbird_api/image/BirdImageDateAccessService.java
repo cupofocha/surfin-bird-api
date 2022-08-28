@@ -17,12 +17,21 @@ public class BirdImageDateAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int numOfImages(){
+    public int numOfImages() {
         String sql = "SELECT COUNT(*) FROM bird_image";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    public int insertImage(UUID userId, String path, Boolean approvement) {
+    public BirdImage getImageByPath(String path) {
+        String sql = ""+
+                " SELECT * " +
+                " FROM bird_image " +
+                " WHERE path = ? ";
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{path}, mapImageFromDb());
+    }
+
+    public int insertImage(UUID userId, String path, Boolean approvement, long postId) {
         try{
             if(birdImageExists(path)){
                 throw new IllegalArgumentException();
@@ -34,24 +43,21 @@ public class BirdImageDateAccessService {
         }
 
         String sql =""+
-                "INSERT INTO bird_image (" +
+                "INSERT INTO bird_image(" +
                 "id, " +
                 "bird, " +
                 "path, " +
                 "approvement, " +
-                "uploader_id) " +
-                "VALUES (?,?,?,?,?)" ;
-        return jdbcTemplate.update(sql, numOfImages(), "NULL", path, approvement, userId);
+                "uploader_id, " +
+                "post_id) " +
+                "VALUES (?,?,?,?,?,?)";
+        return jdbcTemplate.update(sql, numOfImages(), "NULL", path, approvement, userId, postId);
     }
 
     public List<BirdImage> selectAllImages() {
         String sql =""+
                 "SELECT " +
-                " id, " +
-                " bird, " +
-                " path, " +
-                " approvement, " +
-                " uploader_id " +
+                " * " +
                 " FROM bird_image";
 
         return jdbcTemplate.query(sql, mapImageFromDb());
@@ -64,6 +70,15 @@ public class BirdImageDateAccessService {
                 " WHERE id = ? ";
 
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapImageFromDb());
+    }
+
+    public int updateImagePostIdById(long id, long postId) {
+        String sql = ""+
+                " UPDATE bird_image " +
+                " SET post_id = ? " +
+                " WHERE id = ? ";
+
+        return jdbcTemplate.update(sql, postId, id);
     }
 
     boolean birdImageExists(String path) {
@@ -87,8 +102,9 @@ public class BirdImageDateAccessService {
             String path = resultSet.getString("path");
             boolean approvement = resultSet.getBoolean("approvement");
             UUID uploaderId = UUID.fromString(resultSet.getString("uploader_id"));
+            long postId = resultSet.getInt("post_id");
 
-            return new BirdImage(id, bird, path, approvement, uploaderId);
+            return new BirdImage(id, bird, path, approvement, uploaderId, postId);
         };
     }
 }

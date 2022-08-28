@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import shop.ochawork.surfinbird_api.image.dto.DisplayBirdImageDto;
+import shop.ochawork.surfinbird_api.image.dto.ImageMapper;
+import shop.ochawork.surfinbird_api.image.dto.UpdatePostIdDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,14 +16,17 @@ import java.util.UUID;
 public class BirdImageController {
     private final BirdImageService birdImageService;
 
+    private final ImageMapper imageMapper;
+
     @Autowired
-    public BirdImageController(BirdImageService birdImageService) {
+    public BirdImageController(BirdImageService birdImageService, ImageMapper imageMapper) {
         this.birdImageService = birdImageService;
+        this.imageMapper = imageMapper;
     }
 
 
     @PostMapping(path = "upload-image/{userId}")
-    public ResponseEntity<?> handleFileUpload(@RequestParam("birdImage") MultipartFile birdImage,
+    public BirdImageUploadState handleFileUpload(MultipartFile birdImage,
                                               @PathVariable("userId") UUID userId) {
         return birdImageService.addImage(birdImage, userId);
     }
@@ -36,7 +42,12 @@ public class BirdImageController {
     }
 
     @GetMapping
-    public List<BirdImage> getAllImages(){
-        return birdImageService.getAllImages();
+    public List<DisplayBirdImageDto> getAllImages(){
+        return imageMapper.toDisplayBirdImageDtoList(birdImageService.getAllImages());
+    }
+
+    @PostMapping(path = "update-image-postid")
+    public int updateImagePostId(@RequestBody UpdatePostIdDto updatePostIdDto){
+        return birdImageService.updateImagePostId(updatePostIdDto.getId(), updatePostIdDto.getPostId());
     }
 }

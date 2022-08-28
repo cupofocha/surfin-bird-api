@@ -31,7 +31,7 @@ public class ImagePostDataAccessService {
                     UUID.fromString(resultSet.getString("poster_id")),
                     resultSet.getString("text"),
                     birdImageDateAccessService.selectImageById(resultSet.getInt("bird_image_id")),
-                    commentDataAccessService.selectCommentsByPostId("Image", resultSet.getInt("id"))
+                    commentDataAccessService.selectCommentsByPostId("image", resultSet.getInt("id"))
             );
         };
     }
@@ -49,7 +49,8 @@ public class ImagePostDataAccessService {
                 "text, " +
                 "bird_image_id) " +
                 "VALUES (?,?,?,?)";
-        return jdbcTemplate.update(sql, numOfPosts(), posterId, text, birdImageId);
+        jdbcTemplate.update(sql, numOfPosts(), posterId, text, birdImageId);
+        return numOfPosts();
     }
 
     public ImagePost selectPostById(long id) {

@@ -2,9 +2,11 @@ package shop.ochawork.surfinbird_api.post;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import shop.ochawork.surfinbird_api.comment.Comment;
 import shop.ochawork.surfinbird_api.post.dto.ImagePostDto;
 import shop.ochawork.surfinbird_api.post.dto.PostMapper;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,7 +22,8 @@ public class ImagePostController {
     }
 
     @PostMapping(path = "/image/{userId}")
-    public int addPost(@PathVariable("userId") UUID userId, @RequestBody ImagePostDto imagePostDto){
+    public PostState addPost(@PathVariable("userId") UUID userId, @RequestBody ImagePostDto imagePostDto){
+        System.out.println(imagePostDto);
         return imagePostService.addPost(postMapper.toImagePost(imagePostDto, userId));
     }
 
