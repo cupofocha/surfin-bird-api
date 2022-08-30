@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.tinylog.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +40,7 @@ public class BirdImageDateAccessService {
             }
         }
         catch (Exception e){
-            System.out.println("Image already exists!");
+            Logger.info("Image already exists!");
             return 0;
         }
 
@@ -55,30 +57,46 @@ public class BirdImageDateAccessService {
     }
 
     public List<BirdImage> selectAllImages() {
-        String sql =""+
-                "SELECT " +
-                " * " +
-                " FROM bird_image";
-
-        return jdbcTemplate.query(sql, mapImageFromDb());
+        try {
+            String sql = "" +
+                    "SELECT " +
+                    " * " +
+                    " FROM bird_image";
+            return jdbcTemplate.query(sql, mapImageFromDb());
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new ArrayList<>();
+        }
     }
 
     public BirdImage selectImageById(long id) {
-        String sql = ""+
-                " SELECT * " +
-                " FROM bird_image " +
-                " WHERE id = ? ";
 
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapImageFromDb());
+        try {
+            String sql = "" +
+                    " SELECT * " +
+                    " FROM bird_image " +
+                    " WHERE id = ? ";
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, mapImageFromDb());
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return null;
+        }
     }
 
     public int updateImagePostIdById(long id, long postId) {
-        String sql = ""+
-                " UPDATE bird_image " +
-                " SET post_id = ? " +
-                " WHERE id = ? ";
-
-        return jdbcTemplate.update(sql, postId, id);
+        try {
+            String sql = "" +
+                    " UPDATE bird_image " +
+                    " SET post_id = ? " +
+                    " WHERE id = ? ";
+            return jdbcTemplate.update(sql, postId, id);
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return 0;
+        }
     }
 
     boolean birdImageExists(String path) {
@@ -93,6 +111,21 @@ public class BirdImageDateAccessService {
                 new Object[]{path},
                 (resultSet, i) -> resultSet.getBoolean(1)
         );
+    }
+
+    public List<BirdImage> selectBirdImagesByUploaderId(UUID userId) {
+        try {
+            String sql = "" +
+                    " SELECT * " +
+                    " FROM bird_image " +
+                    " WHERE uploader_id = ? ";
+
+            return jdbcTemplate.query(sql, new Object[]{userId}, mapImageFromDb());
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new ArrayList<>();
+        }
     }
 
     private RowMapper<BirdImage> mapImageFromDb() {

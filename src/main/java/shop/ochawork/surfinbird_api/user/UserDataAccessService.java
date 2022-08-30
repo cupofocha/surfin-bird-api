@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import shop.ochawork.surfinbird_api.user.respone.RegisterState;
+import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
 
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class UserDataAccessService {
         return jdbcTemplate.queryForObject(sql, new Object[]{email}, mapUserFromDb());
     }
 
-    public RegisterState insertUser(User user) {
+    public RegisterResponse insertUser(User user) {
         try {
             String sql =""+
                     "INSERT INTO users(" +
@@ -62,12 +62,12 @@ public class UserDataAccessService {
 
             if(!userExists(user.getEmail())){
                 jdbcTemplate.update(sql, user.getUserId(), user.getDisplayName(), user.getPassword(), user.getEmail(), user.getRole().name());
-                return new RegisterState(user.getUserId(), "Success");
+                return new RegisterResponse(user.getUserId(), "Success");
             }
-            else return new RegisterState(selectUserByEmail(user.getEmail()).getUserId(), "User-exists");
+            else return new RegisterResponse(selectUserByEmail(user.getEmail()).getUserId(), "User-exists");
         }
         catch (Exception e) {
-            return new RegisterState(null, "Failed-unexpected-exception");
+            return new RegisterResponse(null, "Failed-unexpected-exception");
         }
     }
 

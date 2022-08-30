@@ -2,10 +2,10 @@ package shop.ochawork.surfinbird_api.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import shop.ochawork.surfinbird_api.user.dto.UserInfoDto;
 import shop.ochawork.surfinbird_api.user.dto.UserLoginDto;
-import shop.ochawork.surfinbird_api.user.respone.LoginState;
-import shop.ochawork.surfinbird_api.user.respone.RegisterState;
+import shop.ochawork.surfinbird_api.user.dto.UserProfileDto;
+import shop.ochawork.surfinbird_api.user.response.LoginResponse;
+import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class UserService {
         return userDataAccessService.selectUserById(userId);
     }
 
-    public RegisterState userRegister(User user){
+    public RegisterResponse userRegister(User user){
         return userDataAccessService.insertUser(user);
     }
 
@@ -30,15 +30,15 @@ public class UserService {
         return userDataAccessService.selectUserByEmail(email);
     }
 
-    public LoginState loginValid(UserLoginDto userLoginDto) {
+    public LoginResponse loginValid(UserLoginDto userLoginDto) {
         try {
             if (getUserByEmail(userLoginDto.getEmail()).getPassword().equals(
                     userLoginDto.getPassword()))
-                return new LoginState(getUserByEmail(userLoginDto.getEmail()).getUserId(),
+                return new LoginResponse(getUserByEmail(userLoginDto.getEmail()).getUserId(),
                         "Successful");
-            else return new LoginState(null, "Wrong_password");
+            else return new LoginResponse(null, "Wrong_password");
         } catch (Exception e) {
-            return new LoginState(null, "Wrong_email");
+            return new LoginResponse(null, "Wrong_email");
         }
     }
 }

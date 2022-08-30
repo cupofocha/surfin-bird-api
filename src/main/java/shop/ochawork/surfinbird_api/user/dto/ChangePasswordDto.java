@@ -1,6 +1,6 @@
 package shop.ochawork.surfinbird_api.user.dto;
 
-public class ChangePasswordDao {
+public class ChangePasswordDto {
     private String email;
 
     private String oldPassword;
@@ -31,7 +31,7 @@ public class ChangePasswordDao {
         this.newPassword = newPassword;
     }
 
-    public ChangePasswordDao(String email, String oldPassword, String newPassword) {
+    public ChangePasswordDto(String email, String oldPassword, String newPassword) {
         this.email = email;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;

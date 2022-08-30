@@ -26,8 +26,18 @@ public class CommentController {
         return commentService.addComment(commentDto, postType, postId);
     }
 
+    @PostMapping(path = "/{postType}")
+    public int addProfileComment(@PathVariable("postType") String postType, @RequestBody CommentDto commentDto){
+        return commentService.addComment(commentDto, postType, 114514);
+    }
+
     @GetMapping(path = "/{postType}/{postId}")
     public List<DisplayCommentDto> getComments(@PathVariable("postType") String postType, @PathVariable("postId") long postId){
-        return commentMapper.toDisplayCommentDtoList(commentService.getComments(postType, postId));
+        return commentMapper.toDisplayCommentDtoList(commentService.getCommentsByPostId(postType, postId));
+    }
+
+    @GetMapping(path = "/{postType}")
+    public List<DisplayCommentDto> getComments(@PathVariable("postType") String postType){
+        return commentMapper.toDisplayCommentDtoList(commentService.getProfileComments(postType));
     }
 }

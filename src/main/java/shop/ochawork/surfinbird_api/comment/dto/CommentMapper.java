@@ -27,7 +27,8 @@ public class CommentMapper {
     public DisplayCommentDto toDisplayCommentDto(Comment comment) {
         return new DisplayCommentDto(userService.getUserById(
                 comment.getCommenterId()).getDisplayName(),
-                comment.getText()
-        );
+                comment.getText(),
+                comment.getId(),
+                comment.getCommenterId());
     }
 }

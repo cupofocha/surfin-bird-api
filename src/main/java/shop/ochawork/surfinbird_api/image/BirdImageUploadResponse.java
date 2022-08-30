@@ -1,6 +1,6 @@
 package shop.ochawork.surfinbird_api.image;
 
-public class BirdImageUploadState {
+public class BirdImageUploadResponse {
     private long imageId;
 
     private String state;
@@ -21,7 +21,7 @@ public class BirdImageUploadState {
         this.state = state;
     }
 
-    public BirdImageUploadState(long imageId, String state) {
+    public BirdImageUploadResponse(long imageId, String state) {
         this.imageId = imageId;
         this.state = state;
     }

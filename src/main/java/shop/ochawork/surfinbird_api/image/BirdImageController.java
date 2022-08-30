@@ -26,8 +26,8 @@ public class BirdImageController {
 
 
     @PostMapping(path = "upload-image/{userId}")
-    public BirdImageUploadState handleFileUpload(MultipartFile birdImage,
-                                              @PathVariable("userId") UUID userId) {
+    public BirdImageUploadResponse handleFileUpload(MultipartFile birdImage,
+                                                    @PathVariable("userId") UUID userId) {
         return birdImageService.addImage(birdImage, userId);
     }
 

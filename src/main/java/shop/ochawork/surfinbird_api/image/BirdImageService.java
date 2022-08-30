@@ -2,9 +2,9 @@ package shop.ochawork.surfinbird_api.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.tinylog.Logger;
 import shop.ochawork.surfinbird_api.user.Role;
 import shop.ochawork.surfinbird_api.user.UserService;
 
@@ -37,16 +37,10 @@ public class BirdImageService {
         return birdImageDateAccessService.selectImageById(id);
     }
 
-    public BirdImageUploadState addImage(MultipartFile birdImage, UUID userId) {
+    public BirdImageUploadResponse addImage(MultipartFile birdImage, UUID userId) {
         Boolean approvement = false;
         String fileName = birdImage.getOriginalFilename();
-        InetAddress localHost = null;
-        try {
-            localHost = Inet4Address.getLocalHost();
-        } catch (UnknownHostException e) {
-            System.out.println(e);
-        }
-        String address = "http://" + localHost.getHostAddress() + ":8080/images/";
+        String address = "http://20.56.120.77:8080/images/";
 
         if(userService.getUserById(userId).getRole() == Role.ADMIN ||
                 userService.getUserById(userId).getRole() == Role.MOD){
@@ -60,15 +54,15 @@ public class BirdImageService {
                     approvement,
                     0
                     ) == 0){
-                return new BirdImageUploadState(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+                return new BirdImageUploadResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
                         "Image already exists!");
             }
-            else return new BirdImageUploadState(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+            else return new BirdImageUploadResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
                     "Success");
         }
         catch (Exception e) {
-            System.out.println(e);
-            return new BirdImageUploadState(0
+            Logger.error(e);
+            return new BirdImageUploadResponse(0
                     ,HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
     }
@@ -80,4 +74,6 @@ public class BirdImageService {
     public List<BirdImage> getAllImages() {
         return birdImageDateAccessService.selectAllImages();
     }
+
+    public List<BirdImage> getImagesByUploaderId(UUID userId) { return birdImageDateAccessService.selectBirdImagesByUploaderId(userId); }
 }

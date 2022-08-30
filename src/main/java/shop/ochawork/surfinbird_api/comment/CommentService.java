@@ -29,7 +29,11 @@ public class CommentService {
         return commentDataAccessService.insertComment(commentDto.getCommenterId(), commentDto.getText(), postType, postId);
     }
 
-    public List<Comment> getComments(String postType, long postId) {
+    public List<Comment> getCommentsByPostId(String postType, long postId) {
         return commentDataAccessService.selectCommentsByPostId(postType, postId);
+    }
+
+    public List<Comment> getProfileComments(String postType) {
+        return commentDataAccessService.selectCommentsByType(postType);
     }
 }

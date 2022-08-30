@@ -1,8 +1,8 @@
-package shop.ochawork.surfinbird_api.user.respone;
+package shop.ochawork.surfinbird_api.user.response;
 
 import java.util.UUID;
 
-public class LoginState {
+public class RegisterResponse {
     private UUID userId;
     private String State;
 
@@ -10,7 +10,7 @@ public class LoginState {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setEmail(UUID userId) {
         this.userId = userId;
     }
 
@@ -22,7 +22,7 @@ public class LoginState {
         State = state;
     }
 
-    public LoginState(UUID userId, String state) {
+    public RegisterResponse(UUID userId, String state) {
         this.userId = userId;
         State = state;
     }
