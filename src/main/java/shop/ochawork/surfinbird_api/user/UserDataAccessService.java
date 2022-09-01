@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import shop.ochawork.surfinbird_api.user.dto.UserInfoDto;
+import shop.ochawork.surfinbird_api.user.dto.UserMapper;
 import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -47,6 +51,21 @@ public class UserDataAccessService {
                 " WHERE email = ?";
 
         return jdbcTemplate.queryForObject(sql, new Object[]{email}, mapUserFromDb());
+    }
+
+    public List<UserInfoDto> selectUserByKeyword(String word) {
+        String sql =""+
+                " SELECT * " +
+                " FROM users" +
+                " WHERE (display_name ILIKE '%" + word + "%'" +
+                " OR email ILIKE '%" + word + "%')";
+        List<UserInfoDto> userInfoDtoList = new ArrayList<>();
+        jdbcTemplate.query(sql, mapUserFromDb()).stream().forEach(user -> {
+            userInfoDtoList.add(new UserInfoDto(user.getDisplayName(),
+                    user.getEmail(),
+                    user.getUserId()));
+        });
+        return userInfoDtoList;
     }
 
     public RegisterResponse insertUser(User user) {

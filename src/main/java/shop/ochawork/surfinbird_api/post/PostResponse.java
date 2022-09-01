@@ -1,6 +1,6 @@
 package shop.ochawork.surfinbird_api.post;
 
-public class PostState {
+public class PostResponse {
     private long id;
 
     private String state;
@@ -21,7 +21,7 @@ public class PostState {
         this.state = state;
     }
 
-    public PostState(long id, String state) {
+    public PostResponse(long id, String state) {
         this.id = id;
         this.state = state;
     }

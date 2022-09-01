@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.tinylog.Logger;
+import shop.ochawork.surfinbird_api.index.IndexDataAccessServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +15,23 @@ import java.util.UUID;
 public class BirdImageDateAccessService {
     private final JdbcTemplate jdbcTemplate;
 
+    private final IndexDataAccessServer indexDataAccessServer;
+
     @Autowired
-    public BirdImageDateAccessService(JdbcTemplate jdbcTemplate) {
+    public BirdImageDateAccessService(JdbcTemplate jdbcTemplate, IndexDataAccessServer indexDataAccessServer) {
         this.jdbcTemplate = jdbcTemplate;
+        this.indexDataAccessServer = indexDataAccessServer;
     }
 
     public int numOfImages() {
         String sql = "SELECT COUNT(*) FROM bird_image";
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    private long newId() {
+        long index = indexDataAccessServer.selectIndexByType("Bird Image");
+        indexDataAccessServer.updateIndexByType("Bird Image", ++index);
+        return index;
     }
 
     public BirdImage getImageByPath(String path) {
@@ -53,7 +63,7 @@ public class BirdImageDateAccessService {
                 "uploader_id, " +
                 "post_id) " +
                 "VALUES (?,?,?,?,?,?)";
-        return jdbcTemplate.update(sql, numOfImages(), "NULL", path, approvement, userId, postId);
+        return jdbcTemplate.update(sql, newId(), "NULL", path, approvement, userId, postId);
     }
 
     public List<BirdImage> selectAllImages() {
@@ -82,6 +92,53 @@ public class BirdImageDateAccessService {
         catch (Exception e) {
             Logger.error(e);
             return null;
+        }
+    }
+
+    public BirdImage selectImageByPostId(long postId) {
+
+        try {
+            String sql = "" +
+                    " SELECT * " +
+                    " FROM bird_image " +
+                    " WHERE post_id = ? ";
+            return jdbcTemplate.queryForObject(sql, new Object[]{postId}, mapImageFromDb());
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return null;
+        }
+    }
+
+    public BirdImageResponse deleteImageById(long id) {
+
+        try {
+            String sql = "" +
+                    " DELETE " +
+                    " FROM bird_image " +
+                    " WHERE id = ? ";
+            jdbcTemplate.update(sql, id);
+            return new BirdImageResponse(id, "Success");
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new BirdImageResponse(id, e.toString());
+        }
+    }
+
+    public BirdImageResponse deleteImageByPostId(long postId) {
+
+        try {
+            String sql = "" +
+                    " DELETE " +
+                    " FROM bird_image " +
+                    " WHERE post_id = ? ";
+            jdbcTemplate.update(sql, postId);
+            return new BirdImageResponse(postId, "Success");
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new BirdImageResponse(postId, e.toString());
         }
     }
 
@@ -125,6 +182,21 @@ public class BirdImageDateAccessService {
         catch (Exception e) {
             Logger.error(e);
             return new ArrayList<>();
+        }
+    }
+
+    public BirdImageResponse updatePathById(long id, String path) {
+        try {
+            String sql = "" +
+                    " UPDATE bird_image " +
+                    " SET path = ? " +
+                    " WHERE id = ? ";
+            jdbcTemplate.update(sql, path, id);
+            return new BirdImageResponse(id, "Success");
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new BirdImageResponse(id, e.toString());
         }
     }
 

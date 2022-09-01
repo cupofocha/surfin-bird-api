@@ -26,8 +26,8 @@ public class BirdImageController {
 
 
     @PostMapping(path = "upload-image/{userId}")
-    public BirdImageUploadResponse handleFileUpload(MultipartFile birdImage,
-                                                    @PathVariable("userId") UUID userId) {
+    public BirdImageResponse handleFileUpload(MultipartFile birdImage,
+                                              @PathVariable("userId") UUID userId) {
         return birdImageService.addImage(birdImage, userId);
     }
 
@@ -49,5 +49,10 @@ public class BirdImageController {
     @PostMapping(path = "update-image-postid")
     public int updateImagePostId(@RequestBody UpdatePostIdDto updatePostIdDto){
         return birdImageService.updateImagePostId(updatePostIdDto.getId(), updatePostIdDto.getPostId());
+    }
+
+    @DeleteMapping(path = "{imageId}")
+    public BirdImageResponse deleteImageById(@PathVariable ("ImageId") long id) {
+        return birdImageService.deleteImageById(id);
     }
 }

@@ -3,8 +3,6 @@ package shop.ochawork.surfinbird_api.post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class ImagePostService {
     private final ImagePostDataAccessService imagePostDataAccessService;
@@ -14,13 +12,21 @@ public class ImagePostService {
         this.imagePostDataAccessService = imagePostDataAccessService;
     }
 
-    public PostState addPost(ImagePost imagePost) {
-        return new PostState(imagePostDataAccessService.insertImagePost(imagePost.getPosterId(),
+    public PostResponse addPost(ImagePost imagePost) {
+        return new PostResponse(imagePostDataAccessService.insertImagePost(imagePost.getPosterId(),
                 imagePost.getText(),
                 imagePost.getBirdImage().getId()), "Success");
     }
 
     public ImagePost getPostById(long id) {
         return imagePostDataAccessService.selectPostById(id);
+    }
+
+    public PostResponse updateText(long id, String text) {
+        return imagePostDataAccessService.updateTextById(id, text);
+    }
+
+    public PostResponse deletePost(long id) {
+        return imagePostDataAccessService.deletePostById(id);
     }
 }

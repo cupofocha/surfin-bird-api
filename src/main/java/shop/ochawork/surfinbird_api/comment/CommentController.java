@@ -36,8 +36,8 @@ public class CommentController {
         return commentMapper.toDisplayCommentDtoList(commentService.getCommentsByPostId(postType, postId));
     }
 
-    @GetMapping(path = "/{postType}")
-    public List<DisplayCommentDto> getComments(@PathVariable("postType") String postType){
-        return commentMapper.toDisplayCommentDtoList(commentService.getProfileComments(postType));
+    @DeleteMapping(path = "/{commentId}")
+    public CommentResponse deleteComments(@PathVariable("commentId") long id) {
+        return commentService.deleteCommentById(id);
     }
 }

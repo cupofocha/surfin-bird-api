@@ -11,12 +11,10 @@ import java.util.UUID;
 
 @Component
 public class UserMapper {
-    private final UserService userService;
     private final BirdImageService birdImageService;
 
     @Autowired
-    public UserMapper(UserService userService, BirdImageService birdImageService) {
-        this.userService = userService;
+    public UserMapper(BirdImageService birdImageService) {
         this.birdImageService = birdImageService;
     }
 

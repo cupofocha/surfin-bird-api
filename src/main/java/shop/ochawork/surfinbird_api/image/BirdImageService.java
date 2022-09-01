@@ -10,9 +10,6 @@ import shop.ochawork.surfinbird_api.user.UserService;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +34,7 @@ public class BirdImageService {
         return birdImageDateAccessService.selectImageById(id);
     }
 
-    public BirdImageUploadResponse addImage(MultipartFile birdImage, UUID userId) {
+    public BirdImageResponse addImage(MultipartFile birdImage, UUID userId) {
         Boolean approvement = false;
         String fileName = birdImage.getOriginalFilename();
         String address = "http://20.56.120.77:8080/images/";
@@ -54,15 +51,15 @@ public class BirdImageService {
                     approvement,
                     0
                     ) == 0){
-                return new BirdImageUploadResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+                return new BirdImageResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
                         "Image already exists!");
             }
-            else return new BirdImageUploadResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
+            else return new BirdImageResponse(birdImageDateAccessService.getImageByPath(address + fileName).getId(),
                     "Success");
         }
         catch (Exception e) {
             Logger.error(e);
-            return new BirdImageUploadResponse(0
+            return new BirdImageResponse(0
                     ,HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
     }
@@ -76,4 +73,13 @@ public class BirdImageService {
     }
 
     public List<BirdImage> getImagesByUploaderId(UUID userId) { return birdImageDateAccessService.selectBirdImagesByUploaderId(userId); }
+
+    public BirdImageResponse deleteImageById(long id) {
+        return birdImageDateAccessService.deleteImageById(id);
+    }
+
+    public BirdImageResponse deleteImageByPostId(long postId) {
+        return birdImageDateAccessService.deleteImageByPostId(postId);
+    }
 }
+

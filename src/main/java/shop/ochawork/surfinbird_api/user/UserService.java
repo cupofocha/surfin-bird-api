@@ -2,16 +2,19 @@ package shop.ochawork.surfinbird_api.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import shop.ochawork.surfinbird_api.user.dto.UserInfoDto;
 import shop.ochawork.surfinbird_api.user.dto.UserLoginDto;
-import shop.ochawork.surfinbird_api.user.dto.UserProfileDto;
+import shop.ochawork.surfinbird_api.user.dto.UserMapper;
 import shop.ochawork.surfinbird_api.user.response.LoginResponse;
 import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
-    UserDataAccessService userDataAccessService;
+    private final UserDataAccessService userDataAccessService;
 
     @Autowired
     public UserService(UserDataAccessService userDataAccessService) {
@@ -29,6 +32,14 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userDataAccessService.selectUserByEmail(email);
     }
+
+//    public List<UserInfoDto> getUserByKeyword(String word) {
+//        List<UserInfoDto> userInfoDtoList = new ArrayList<>();
+//        userDataAccessService.selectUserByKeyword(word).stream().forEach(user -> {
+//            userInfoDtoList.add(userMapper.toUserInfoDto(user));
+//        });
+//        return userInfoDtoList;
+//    }
 
     public LoginResponse loginValid(UserLoginDto userLoginDto) {
         try {

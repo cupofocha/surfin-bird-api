@@ -33,7 +33,11 @@ public class CommentService {
         return commentDataAccessService.selectCommentsByPostId(postType, postId);
     }
 
-    public List<Comment> getProfileComments(String postType) {
-        return commentDataAccessService.selectCommentsByType(postType);
+    public CommentResponse deleteCommentById(long id) {
+        return commentDataAccessService.deleteCommentById(id);
+    }
+
+    public CommentResponse deleteCommentByPostId(long postId) {
+        return commentDataAccessService.deleteCommentById(postId);
     }
 }
