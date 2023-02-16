@@ -7,6 +7,7 @@ import shop.ochawork.surfinbird_api.user.dto.UserLoginDto;
 import shop.ochawork.surfinbird_api.user.dto.UserMapper;
 import shop.ochawork.surfinbird_api.user.response.LoginResponse;
 import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
+import shop.ochawork.surfinbird_api.user.response.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,14 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userDataAccessService.selectUserByEmail(email);
+    }
+
+    public UserResponse changeDisplayName(UUID id, String newDisplayName) {
+        return userDataAccessService.updateDisplayNameById(id, newDisplayName);
+    }
+
+    public UserResponse changeEmail(UUID id, String newEmail) {
+        return userDataAccessService.updateEmailById(id, newEmail);
     }
 
 //    public List<UserInfoDto> getUserByKeyword(String word) {

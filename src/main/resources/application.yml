@@ -1,10 +1,11 @@
 app:
   datasource:
-    jdbc-url: jdbc:postgresql://20.56.120.77:5432/surfinbirddb
+    jdbc-url: jdbc:postgresql://34.159.61.208/postgres
     username: postgres
-    password: deathgun233
+    password: "@deathgun233"
     pool-size: 30
     minimumIdle: 2
-    idleTimeout: 300000
-    connectionTimeout: 300000
+    idleTimeout: 10000
+    connectionTimeout: 10000
     leakDetectionThreshold: 300000
+    max-lifetime: 200000

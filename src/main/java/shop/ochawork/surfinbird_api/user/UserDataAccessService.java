@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.tinylog.Logger;
+import shop.ochawork.surfinbird_api.image.BirdImageResponse;
 import shop.ochawork.surfinbird_api.user.dto.UserInfoDto;
 import shop.ochawork.surfinbird_api.user.dto.UserMapper;
 import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
+import shop.ochawork.surfinbird_api.user.response.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +90,36 @@ public class UserDataAccessService {
         }
         catch (Exception e) {
             return new RegisterResponse(null, "Failed-unexpected-exception");
+        }
+    }
+
+    public UserResponse updateDisplayNameById(UUID id, String newDisplayName) {
+        try {
+            String sql = "" +
+                    " UPDATE users " +
+                    " SET display_name = ? " +
+                    " WHERE user_id = ? ";
+            jdbcTemplate.update(sql, newDisplayName, id);
+            return new UserResponse(id, "Success");
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new UserResponse(id, e.toString());
+        }
+    }
+
+    public UserResponse updateEmailById(UUID id, String newEmail) {
+        try {
+            String sql = "" +
+                    " UPDATE users " +
+                    " SET email = ? " +
+                    " WHERE user_id = ? ";
+            jdbcTemplate.update(sql, newEmail, id);
+            return new UserResponse(id, "Success");
+        }
+        catch (Exception e) {
+            Logger.error(e);
+            return new UserResponse(id, e.toString());
         }
     }
 

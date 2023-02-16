@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import shop.ochawork.surfinbird_api.user.dto.*;
 import shop.ochawork.surfinbird_api.user.response.LoginResponse;
 import shop.ochawork.surfinbird_api.user.response.RegisterResponse;
+import shop.ochawork.surfinbird_api.user.response.UserResponse;
 
 import java.util.UUID;
 
@@ -35,12 +36,22 @@ public class UserController {
     }
 
     @GetMapping(path = "{userId}")
-    public UserInfoDto getUserInfo (@PathVariable("userId") UUID userId){
+    public UserInfoDto getUserInfo (@PathVariable("userId") UUID userId) {
         return userMapper.toUserInfoDto(userService.getUserById(userId));
     }
 
     @GetMapping(path = "profile/{userId}")
-    public UserProfileDto getUserProfile (@PathVariable("userId") UUID userId){
+    public UserProfileDto getUserProfile (@PathVariable("userId") UUID userId) {
         return userMapper.toUserProfileDto(userService.getUserById(userId));
+    }
+
+    @PostMapping(path = "change/display_name")
+    public UserResponse changeDisplayName(@RequestBody ChangeDisplayNameDto changeDisplayNameDto) {
+        return userService.changeDisplayName(changeDisplayNameDto.getId(), changeDisplayNameDto.getDisplayName());
+    }
+
+    @PostMapping(path = "change/email")
+    public UserResponse changeEmail(@RequestBody ChangeEmailDto changeEmailDto) {
+        return userService.changeEmail(changeEmailDto.getId(), changeEmailDto.getNewEmail());
     }
 }
