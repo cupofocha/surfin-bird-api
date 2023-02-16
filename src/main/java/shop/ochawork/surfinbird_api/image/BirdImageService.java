@@ -37,7 +37,7 @@ public class BirdImageService {
     public BirdImageResponse addImage(MultipartFile birdImage, UUID userId) {
         Boolean approvement = false;
         String fileName = birdImage.getOriginalFilename();
-        String address = "http://20.56.120.77:8080/images/";
+        String address = "http://api.ochawork.shop/images/";
 
         if(userService.getUserById(userId).getRole() == Role.ADMIN ||
                 userService.getUserById(userId).getRole() == Role.MOD){
