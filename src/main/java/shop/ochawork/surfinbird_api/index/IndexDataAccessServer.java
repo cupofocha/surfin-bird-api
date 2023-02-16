@@ -17,11 +17,16 @@ public class IndexDataAccessServer {
     }
 
     public long selectIndexByType(String type) {
-        String sql = ""+
-                " SELECT index " +
-                " FROM index_table " +
-                " WHERE type = ? ";
-        return jdbcTemplate.queryForObject(sql, new Object[]{type}, Long.class);
+        try{
+            String sql = ""+
+                    " SELECT index " +
+                    " FROM index_table " +
+                    " WHERE type = ? ";
+            return jdbcTemplate.queryForObject(sql, new Object[]{type}, Long.class);
+        }
+        catch (Exception e){
+            return 0;
+        }
     }
 
     public int updateIndexByType(String type, long index) {
